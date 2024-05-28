@@ -20,7 +20,7 @@ namespace LinePayApiSdk.DTOs.Capture
         /// 額外選項。
         /// </summary>
         [JsonPropertyName("options")]
-        public CaptureOptions? Options { get; set; }
+        public CaptureOptions Options { get; set; }
     }
 
     /// <summary>

@@ -8,7 +8,7 @@ namespace LinePayApiSdk.DTOs.PaymentDetail
         /// 交易資訊列表。
         /// </summary>
         [JsonPropertyName("info")]
-        public List<TransactionInfo>? Info { get; set; }
+        public List<TransactionInfo> Info { get; set; }
     }
 
     /// <summary>
