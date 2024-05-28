@@ -36,7 +36,7 @@ namespace LinePayApiSdk
 
             _channelId = options.ChannelId;
             _channelSecret = options.ChannelSecret;
-            _httpClient = options.HttpClient ?? new HttpClient();
+            _httpClient = options.HttpClient ?? throw new ArgumentNullException(nameof(options.HttpClient), "HttpClient is required");
             if (string.IsNullOrEmpty(options.BaseAddress))
             {
                 _httpClient.BaseAddress = options.IsSandBox

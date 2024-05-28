@@ -11,8 +11,7 @@ namespace LinePayApiSdk.DTOs
         /// </summary>
         public string ChannelSecret { get; set; }
         /// <summary>
-        /// HttpClient，若未提供，則會建立新的HttpClient；若提供，則會使用提供的HttpClient。
-        /// 建議由呼叫端提供HttpClient，以便可以共用HttpClient，避免每次呼叫都要重新建立HttpClient
+        /// 由呼叫端提供HttpClient，以便可以共用HttpClient。
         /// </summary>
         public HttpClient HttpClient { get; set; }
         /// <summary>
