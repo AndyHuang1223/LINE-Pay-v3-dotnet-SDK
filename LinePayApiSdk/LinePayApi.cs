@@ -39,7 +39,7 @@ namespace LinePayApiSdk
             _httpClient = options.HttpClient ?? new HttpClient();
             if (string.IsNullOrEmpty(options.BaseAddress))
             {
-                _httpClient.BaseAddress = options.IsSendBox
+                _httpClient.BaseAddress = options.IsSandBox
                     ? new Uri(SandboxApiBaseAddress)
                     : new Uri(ProductionApiBaseAddress);
             }
