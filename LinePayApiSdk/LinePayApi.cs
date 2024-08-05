@@ -128,14 +128,14 @@ namespace LinePayApiSdk
             var tempStr = queryString.ToString().Replace("?", string.Empty);
             var headers = GetRequestHeadersHandler(tempStr, requestPath);
 
+            var requestUri = requestPath + queryString;
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, requestUri);
+            
             foreach (var item in headers)
             {
-                _httpClient.DefaultRequestHeaders.Add(item.Key, item.Value);
+                httpRequest.Headers.Add(item.Key, item.Value);
             }
-
-            var requestUri = requestPath + queryString;
-
-            return await _httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, requestUri))
+            return await _httpClient.SendAsync(httpRequest)
                 .ToResult<TResponse>();
         }
 
