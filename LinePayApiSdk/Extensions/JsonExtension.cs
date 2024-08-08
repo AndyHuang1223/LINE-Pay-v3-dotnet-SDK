@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using LinePayApiSdk.Converters;
 
 namespace LinePayApiSdk.Extensions
 {
@@ -7,7 +8,11 @@ namespace LinePayApiSdk.Extensions
     {
         private static readonly JsonSerializerOptions SerializerOptions = new JsonSerializerOptions
         {
-            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            Converters =
+            {
+                new DecimalWithoutTrailingZeroJsonConverter()
+            }
         };
 
         public static string ToJson(this object obj)
@@ -23,7 +28,7 @@ namespace LinePayApiSdk.Extensions
                 obj = JsonSerializer.Deserialize<T>(json);
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 obj = default;
                 errMsg = e.Message;
