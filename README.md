@@ -247,4 +247,4 @@ return Redirect(response.Info.PaymentUrl.Web);
 - [LINE Pay Online APIs](https://pay.line.me/th/developers/apis/onlineApis?locale=zh_TW)
 - [LINE Pay create Sandbox](https://pay.line.me/tw/developers/techsupport/sandbox/creation?locale=zh_TW)
 - [Azure Dev Tunnels](https://learn.microsoft.com/zh-tw/azure/developer/dev-tunnels/get-started?tabs=windows)
-- [Dependency Injection 使用指南](doc/DI-USAGE.md)
+- [Dependency Injection 使用指南](docs/DI-USAGE.md)
