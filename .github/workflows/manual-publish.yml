@@ -30,14 +30,10 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
       
-    - name: Update project version
-      run: |
-        sed -i "s/<PackageVersion>.*<\/PackageVersion>/<PackageVersion>${{ github.event.inputs.version }}<\/PackageVersion>/" source/LinePayApiSdk/LinePayApiSdk.csproj
-        
     - name: Build and Pack
       run: |
         dotnet build --configuration Release
-        dotnet pack source/LinePayApiSdk/LinePayApiSdk.csproj --configuration Release --no-build --output ./artifacts
+        dotnet pack source/LinePayApiSdk/LinePayApiSdk.csproj --configuration Release --no-build --output ./artifacts -p:PackageVersion=${{ github.event.inputs.version }}
         
     - name: List package contents
       run: |
