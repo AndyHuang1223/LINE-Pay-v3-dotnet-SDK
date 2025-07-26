@@ -13,18 +13,34 @@ using LinePayApiSdk.DTOs.Void;
 using LinePayApiSdk.Extensions;
 using LinePayApiSdk.Helpers;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 
 namespace LinePayApiSdk
 {
-    public class LinePayApi
+    public class LinePayApi : ILinePayApi
     {
         private readonly HttpClient _httpClient;
         private readonly string _channelId;
         private readonly string _channelSecret;
-        private const string SandboxApiBaseAddress = "https://sandbox-api-pay.line.me";
-        private const string ProductionApiBaseAddress = "https://api-pay.line.me";
 
-        public LinePayApi(LinePayApiOptions options)
+        public LinePayApi(HttpClient httpClient, IOptions<LinePayApiOptions> options)
+        {
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            
+            var optionsValue = options?.Value ?? throw new ArgumentNullException(nameof(options));
+            
+            if (string.IsNullOrEmpty(optionsValue.ChannelId))
+                throw new ArgumentException("ChannelId is required.", nameof(options));
+            if (string.IsNullOrEmpty(optionsValue.ChannelSecret))
+                throw new ArgumentException("ChannelSecret is required.", nameof(options));
+
+            _channelId = optionsValue.ChannelId;
+            _channelSecret = optionsValue.ChannelSecret;
+        }
+
+        // 保留舊的建構函式以維持向後相容性
+        [Obsolete("Please use dependency injection with IOptions<LinePayApiOptions> instead.", false)]
+        public LinePayApi(LinePayApiOptions options, HttpClient httpClient)
         {
             if (options == null)
                 throw new ArgumentNullException(nameof(options), "Options is required.");
@@ -36,17 +52,14 @@ namespace LinePayApiSdk
 
             _channelId = options.ChannelId;
             _channelSecret = options.ChannelSecret;
-            _httpClient = options.HttpClient ?? throw new ArgumentNullException(nameof(options.HttpClient), "HttpClient is required");
-            if (string.IsNullOrEmpty(options.BaseAddress))
-            {
-                _httpClient.BaseAddress = options.IsSandBox
-                    ? new Uri(SandboxApiBaseAddress)
-                    : new Uri(ProductionApiBaseAddress);
-            }
-            else
-            {
-                _httpClient.BaseAddress = new Uri(options.BaseAddress);
-            }
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient), "HttpClient is required");
+            
+            const string SandboxApiBaseAddress = "https://sandbox-api-pay.line.me";
+            const string ProductionApiBaseAddress = "https://api-pay.line.me";
+            
+            _httpClient.BaseAddress = options.IsSandBox
+                ? new Uri(SandboxApiBaseAddress)
+                : new Uri(ProductionApiBaseAddress);
         }
 
 
