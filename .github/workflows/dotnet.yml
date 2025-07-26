@@ -52,14 +52,12 @@ jobs:
       id: get_version
       run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
       
-    - name: Update project version
-      run: |
-        sed -i "s/<PackageVersion>.*<\/PackageVersion>/<PackageVersion>${{ steps.get_version.outputs.VERSION }}<\/PackageVersion>/" source/LinePayApiSdk/LinePayApiSdk.csproj
+# Removed the step that uses sed to update the project version.
         
     - name: Build and Pack
       run: |
         dotnet build --configuration Release
-        dotnet pack source/LinePayApiSdk/LinePayApiSdk.csproj --configuration Release --no-build --output ./artifacts
+        dotnet pack source/LinePayApiSdk/LinePayApiSdk.csproj --configuration Release --no-build --output ./artifacts -p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
         
     - name: Publish to NuGet
       run: |
