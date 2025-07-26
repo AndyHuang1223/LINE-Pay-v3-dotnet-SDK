@@ -1,0 +1,52 @@
+# Manual workflow to publish NuGet package
+name: Manual NuGet Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Package version (e.g., 1.0.1)'
+        required: true
+        default: '1.0.0'
+        type: string
+      publish_to_nuget:
+        description: 'Publish to NuGet.org'
+        required: true
+        default: true
+        type: boolean
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build and Pack
+      run: |
+        dotnet build --configuration Release
+        dotnet pack source/LinePayApiSdk/LinePayApiSdk.csproj --configuration Release --no-build --output ./artifacts -p:PackageVersion=${{ github.event.inputs.version }}
+        
+    - name: List package contents
+      run: |
+        echo "Generated packages:"
+        ls -la ./artifacts/
+        
+    - name: Publish to NuGet
+      if: ${{ github.event.inputs.publish_to_nuget == 'true' }}
+      run: |
+        dotnet nuget push ./artifacts/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
+        
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: nuget-packages-v${{ github.event.inputs.version }}
+        path: ./artifacts/*.nupkg

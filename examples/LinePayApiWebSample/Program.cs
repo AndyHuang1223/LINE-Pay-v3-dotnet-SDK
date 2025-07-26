@@ -1,3 +1,5 @@
+using LinePayApiSdk.Extensions;
+
 namespace LinePayApiWebSample
 {
     public class Program
@@ -9,14 +11,16 @@ namespace LinePayApiWebSample
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            // Add IHttpClientFactory to the container.
-            //option1. use default client
-            builder.Services.AddHttpClient();
-            //option2.use named-clients
-            //builder.Services.AddHttpClient("LINEPay", httpClient =>
-            //{
-            //    httpClient.BaseAddress = new Uri("https://api-pay.line.me");
-            //});
+            // 方式1: 使用 Action 委派配置 LinePay
+            builder.Services.AddLinePay(options =>
+            {
+                options.ChannelId = "YOUR_CHANNEL_ID";
+                options.ChannelSecret = "YOUR_CHANNEL_SECRET";
+                options.IsSandBox = true;
+            });
+
+            // 方式2: 使用設定檔配置 LinePay (註解掉方式1後使用)
+            // builder.Services.AddLinePay(builder.Configuration);
 
             var app = builder.Build();
 
