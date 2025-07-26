@@ -1,6 +1,8 @@
 # LINE Pay API v3 SDK for .NET
 
 [![.NET Version](https://img.shields.io/badge/.NET-8.0-blue)](https://dotnet.microsoft.com/download/dotnet/8.0)
+[![GitHub Release](https://img.shields.io/github/v/release/AndyHuang1223/LinePayApiSdk?label=latest)](https://github.com/AndyHuang1223/LinePayApiSdk/releases/latest)
+[![NuGet Version](https://img.shields.io/nuget/v/LinePayApiSdk?label=nuget)](https://www.nuget.org/packages/LinePayApiSdk)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 ## Overview
