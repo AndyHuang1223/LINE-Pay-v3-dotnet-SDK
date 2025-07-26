@@ -39,7 +39,7 @@ namespace LinePayApiSdk
         }
 
         // 保留舊的建構函式以維持向後相容性
-        [Obsolete("Please use dependency injection with IOptions<LinePayApiOptions> instead.", false)]
+        [Obsolete("This constructor will be removed in version 2.0.0. Please use dependency injection with IOptions<LinePayApiOptions> instead.", false)]
         public LinePayApi(LinePayApiOptions options, HttpClient httpClient)
         {
             if (options == null)
