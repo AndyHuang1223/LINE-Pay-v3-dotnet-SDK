@@ -4,6 +4,23 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
+
+    <!-- NuGet Package Information -->
+    <PackageId>LinePayApiSdk</PackageId>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Authors>AndyHuang1223</Authors>
+    <Company>AndyHuang1223</Company>
+    <Product>LINE Pay API SDK</Product>
+    <Description>A .NET SDK for LINE Pay API integration</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/AndyHuang1223/LinePayApiSdk</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/AndyHuang1223/LinePayApiSdk.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>linepay;payment;api;sdk;dotnet</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +29,10 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>
