@@ -236,6 +236,118 @@ return Redirect(response.Info.PaymentUrl.Web);
 | `PayPreapprovedAsync()`     | 預先授權付款   | `PayPreapprovedResponse`     |
 | `ExpireRegKeyAsync()`       | 使註冊金鑰過期 | `ExpireRegKeyResponse`       |
 
+## 專案預計優化項目
+
+### 🔧 架構與設計優化
+
+#### 1. 錯誤處理機制
+
+- **現狀**: 目前僅使用基本的 `Exception` 和 `InvalidOperationException`
+- **建議**: 建立自定義異常類別體系
+  - `LinePayApiException`: 基礎異常類別
+  - `LinePayAuthenticationException`: 認證錯誤
+  - `LinePayValidationException`: 參數驗證錯誤
+  - `LinePayNetworkException`: 網路相關錯誤
+  - `LinePayBusinessException`: 業務邏輯錯誤
+
+#### 2. 日誌記錄功能
+
+- **現狀**: 缺乏日誌記錄機制
+- **建議**: 整合 Microsoft.Extensions.Logging
+  - 記錄 API 請求/回應
+  - 記錄錯誤詳情和堆疊追蹤
+  - 可配置的日誌等級
+  - 支援結構化日誌
+
+#### 3. 重試機制
+
+- **現狀**: 沒有內建重試機制
+- **建議**: 實作 Polly 重試策略
+  - 指數退避重試
+  - 熔斷器模式
+  - 針對特定 HTTP 狀態碼重試
+
+### 🛡️ 安全性優化
+
+#### 4. 敏感資料保護
+
+- **現狀**: Channel Secret 直接存在記憶體中
+- **建議**:
+  - 使用 `SecureString` 或加密存儲
+  - 實作敏感資料清理機制
+  - 避免在日誌中記錄敏感資訊
+
+### 🚀 效能優化
+
+#### 5. HttpClient 配置優化
+
+- **現狀**: 基本的 HttpClient 配置
+- **建議**:
+  - 設定連線池大小
+  - 實作 HTTP/2 支援
+  - 增加壓縮支援
+  - 優化 Timeout 設定策略
+
+### 🧪 測試與品質保證
+
+#### 6. 單元測試覆蓋率
+
+- **現狀**: 目前缺乏測試專案
+- **建議**:
+  - 建立完整的單元測試專案
+  - 使用 xUnit 或 NUnit 框架
+  - 實作 Mock 測試 (使用 Moq 或 NSubstitute)
+  - 達到 80%+ 程式碼覆蓋率
+
+#### 7. 整合測試
+
+- **建議**:
+  - 建立 Sandbox 環境整合測試
+  - 實作測試資料工廠模式
+  - 支援測試環境隔離
+
+### 📋 API 設計優化
+
+#### 8. 非同步程式設計最佳化
+
+- **現狀**: 基本的 async/await 實作
+- **建議**:
+  - 支援 CancellationToken
+  - 實作超時控制
+  - 避免死鎖風險
+
+#### 9. 參數驗證增強
+
+- **現狀**: 基本的 null 檢查
+- **建議**:
+  - 使用 FluentValidation 進行復雜驗證
+  - 實作 Data Annotations 支援
+  - 提供詳細的驗證錯誤訊息
+
+#### 10. 回應模型優化
+
+- **建議**:
+  - 增加統一的 API 回應包裝器
+  - 支援分頁回應模型
+  - 實作回應資料轉換器
+
+### 🔄 相容性與擴展性
+
+#### 11. 設定管理優化
+
+- **建議**:
+  - 支援環境變數配置
+  - 實作設定驗證
+  - 支援動態設定更新
+
+### 🎯 優先實作建議
+
+基於重要性和影響程度，建議優先實作順序：
+
+1. **高優先級**: 錯誤處理機制、日誌記錄、單元測試
+2. **中優先級**: 重試機制、參數驗證、文檔完善
+3. **低優先級**: 效能優化
+
 ## 貢獻
 
 歡迎提交 Issue 和 Pull Request 來改善這個專案。
